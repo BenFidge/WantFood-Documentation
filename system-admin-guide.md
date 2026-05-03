@@ -712,6 +712,18 @@ Runs vendor or platform integrity checks to identify data issues.
 **Expected outcome**  
 Operations staff receive a current view of detected issues and can plan remediation.
 
+### Nightly jobs (manual run)
+**Purpose**  
+Manually queue any of the scheduled nightly jobs (reconcile daily stats, archive completed orders, recalculate vendor tiers, recalculate ratings, cleanup stale chat threads, reindex vendors, rebuild vendor caches) for an immediate run.
+
+**Key actions**
+- pick a job from the **Nightly Jobs** section on the Tools page and click *Run now*
+- for *Reconcile daily stats*, optionally enter a `yyyy-MM-dd` date; leaving it blank reconciles yesterday (UTC)
+- read the success banner for the **correlation id** returned with the 202 Accepted response and use it to follow the job in the logs
+
+**Expected outcome**  
+The job command is published to MassTransit and processed by the owning service. Manual runs share the same dedupe and idempotency contract as the scheduled runs, so re-running a job (or running it while a scheduled run is in flight) will not duplicate side effects, and the next scheduled execution time is unaffected.
+
 ### End-to-end workflow
 1. Open the Tools dashboard.
 2. Select the maintenance action that matches the operational issue.

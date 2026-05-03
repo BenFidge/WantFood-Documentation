@@ -102,6 +102,22 @@ These actions are initiated from System Admin or other admin-only surfaces. Some
 - Where a tool returns a success message immediately, documentation should clarify whether that means the work finished or was merely accepted for background processing.
 - The manual rating recalculation and commission recalculation actions are particularly important when operators need urgent data correction outside the normal overnight schedule.
 
+### Manual nightly job triggers (Phase 3)
+
+System Admin -> Tools includes a **Nightly Jobs** section that exposes a "Run now" button for every nightly job. Each button calls `POST /api/admin/jobs/{job}` on the BFF, which forwards to the owning service and publishes the corresponding MassTransit command. The service responds with `202 Accepted` and a JSON payload containing a `correlationId`; the UI surfaces this in the success banner ("Job queued (correlation id: ...)").
+
+| Job | BFF route | MassTransit command | Notes |
+| --- | --- | --- | --- |
+| Reconcile daily stats | `POST /api/admin/jobs/reconcile-daily-stats?date=yyyy-MM-dd` | `ReconcileDailyStatsCommand` | Date is optional and defaults to yesterday (UTC). Idempotent on `(date, correlationId)`. |
+| Archive completed orders | `POST /api/admin/jobs/archive-orders` | `ArchiveCompletedOrdersCommand` | Skips orders already archived. |
+| Recalculate vendor tiers | `POST /api/admin/jobs/recalculate-tiers` | `RecalculateVendorTiersCommand` | Suppresses duplicate `VendorTierChanged` events. |
+| Recalculate ratings | `POST /api/admin/jobs/recalculate-ratings` | `RecalculateRatingsCommand` | Recomputes only deltas. |
+| Cleanup stale chat threads | `POST /api/admin/jobs/cleanup-stale-chat-threads` | `CleanupStaleChatThreadsCommand` | One-shot per thread; safe to re-run. |
+| Reindex vendors (job) | `POST /api/admin/jobs/reindex-vendors` | `ReindexVendorsCommand` | Same effect as the legacy "Reindex vendors" tool button but via the job pipeline. |
+| Rebuild vendor caches (job) | `POST /api/admin/jobs/rebuild-vendor-caches` | `RebuildVendorCachesCommand` | Same effect as the legacy "Rebuild caches" tool button but via the job pipeline. |
+
+All endpoints require the `PlatformAdmin` policy. Manual and scheduled invocations publish the same command, so consumer-side dedupe (via `JobRun` and the MassTransit outbox) prevents overlapping or duplicated work. Manual runs do not shift the next scheduled time.
+
 ---
 
 ## 4. Startup automation
