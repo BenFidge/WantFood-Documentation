@@ -7,4 +7,5 @@
 | --- | --- | --- |
 | [User Documentation](documentation/index.md) | Guides for running the various websites |
 | [UAT](uat/00-introduction.md) | Guide for performing UAT |
+| [Architecture](architecture/index.md) | Guide for performing UAT |
 
