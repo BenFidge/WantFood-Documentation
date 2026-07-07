@@ -483,25 +483,60 @@ Each test case follows this format:
 **Given**: You are viewing the Admin Users list
 
 **Steps**:
-1. Click **"Add User"** or **"Create Admin User"**
-2. Enter the new user's email address and role (if applicable)
-3. Click **"Save"** or **"Create"**
+1. Click **"Add User"**
+2. Enter a valid email address (use a test address that does not already have a WantFood account)
+3. Enter first name and last name
+4. Leave display name blank
+5. Click **"Add User"**
 
 **Expected Result**:
-- A success message appears: "Admin user added successfully"
-- The new user appears in the Admin Users list
-- An invitation email is sent to the user (if applicable)
+- The form submits successfully
+- You are redirected to the **User Created** confirmation screen
+- The User Created screen shows:
+  - The new user's name and email address
+  - A **temporary password** in a read-only field with a Copy button
+  - A warning that the password is only shown once
+  - An **Add Another User** button and a **View All Users** button
+- After clicking **View All Users**, the new user appears in the Admin Users list
 
 **Pass Criteria**:
-- ✅ User is added
-- ✅ Success message displayed
-- ✅ User appears in the list
+- ✅ User is created successfully
+- ✅ Temporary password is displayed on the User Created screen
+- ✅ New user appears in the Admin Users list
+- ✅ Warning about copying the password is clearly visible
 
 **Edge Cases**:
-- Duplicate email → should show error: "User already exists"
-- Invalid email format → should show validation error
+- Missing required field (email, first name, last name) → validation error shown, form not submitted
+- Invalid email format → validation error shown
+- Email already exists → should return an error (duplicate account prevention)
+- Navigating away from User Created without copying → password cannot be retrieved; user must be deleted and recreated
 
 **Cross-portal verification**: After completing this test, run **TC-AC-052** in [10-permissions-and-account-uat.md](10-permissions-and-account-uat.md) to confirm the change propagates correctly to the customer front-end / other portals.
+
+---
+
+### TC-SA-051a: Copy Temporary Password After Adding Admin User
+
+**Given**: You are on the User Created screen after adding a new admin user
+
+**Steps**:
+1. Click the **Copy** button next to the temporary password field
+2. Open a text editor or browser address bar
+3. Paste (Ctrl+V / Cmd+V)
+
+**Expected Result**:
+- The temporary password is copied to the clipboard
+- The Copy button changes to "Copied!" briefly as confirmation
+- The text pasted matches the password shown in the read-only field exactly
+
+**Pass Criteria**:
+- ✅ Copy button is present and functional
+- ✅ Clipboard content matches the displayed password exactly
+- ✅ Visual confirmation appears after copying
+
+**Edge Cases**:
+- Test in both Chrome and Safari (clipboard API behaviour differs by browser and requires HTTPS)
+- Refreshing the page → password is no longer accessible (TempData has been consumed)
 
 ---
 

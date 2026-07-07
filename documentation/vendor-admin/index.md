@@ -28,6 +28,8 @@ This section contains the definitive Vendor Admin documentation set for WantFood
 | [Reviews list](pages/reviews-list.md) | You use this page to review customer feedback and escalate issues that need platform moderation. |
 | [Delivery costs](pages/delivery-costs.md) | You use this page to manage delivery pricing for the current vendor or branch context. |
 | [Payment methods](pages/payment-methods.md) | You use this page to configure which payment methods the current vendor can accept and how the payment connection is set up. |
+| [Team list](pages/team-list.md) | You use this page to manage the staff members who have access to Vendor Admin for the current vendor account. |
+| [Account Created](pages/account-created.md) | You see this page immediately after adding a new team member; it shows the new user's temporary password. |
 
 ## Features
 | Feature | Purpose |
@@ -46,4 +48,5 @@ This section contains the definitive Vendor Admin documentation set for WantFood
 | [Flag a review for System Admin](features/flag-a-review-for-system-admin.md) | You use this workflow when customer feedback needs moderation or escalation beyond the vendor side. |
 | [Configure delivery costs](features/configure-delivery-costs.md) | You use this workflow to update the delivery pricing rules for the current vendor or branch. |
 | [Configure payment methods](features/configure-payment-methods.md) | You use this workflow to update which payment methods the current vendor can offer and how the payment connection is configured. |
+| [Manage team members](features/manage-team-members.md) | You use this workflow to add or remove the staff members who have access to Vendor Admin for the current vendor account. |
 

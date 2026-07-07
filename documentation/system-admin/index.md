@@ -18,6 +18,7 @@ This section contains the definitive System Admin documentation set for WantFood
 | [Vendor details](pages/vendor-details.md) | You use this page to review the platform view of one vendor before making changes. |
 | [Vendor users list](pages/vendor-users-list.md) | You use this page to review vendor-linked users and correct ownership or access problems. |
 | [Users list](pages/users-list.md) | You use this page to manage internal admin users who can access the System Admin site. |
+| [User Created](pages/user-created.md) | You see this page immediately after adding a new admin user; it shows the new user's temporary password. |
 | [Orders list](pages/orders-list.md) | You use this page to find orders that need support, investigation, or financial follow-up. |
 | [Order details](pages/order-details.md) | You use this page to review the operational and support context for one order. |
 | [Commissions dashboard](pages/commissions-dashboard.md) | You use this page to monitor how commission settings apply across vendors and to spot records that need review. |

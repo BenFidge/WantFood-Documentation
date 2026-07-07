@@ -49,10 +49,11 @@ If any of this data is missing, contact your project manager before starting.
 6. [Live Order Kanban](#live-order-kanban)
 7. [All Orders View](#all-orders-view)
 8. [Driver Management](#driver-management)
-9. [Promotions and Offers](#promotions-and-offers)
-10. [Reviews](#reviews)
-11. [Delivery Cost Configuration](#delivery-cost-configuration)
-12. [Payment Settings](#payment-settings)
+9. [Team Management](#team-management)
+10. [Promotions and Offers](#promotions-and-offers)
+11. [Reviews](#reviews)
+12. [Delivery Cost Configuration](#delivery-cost-configuration)
+13. [Payment Settings](#payment-settings)
 
 ---
 
@@ -1609,6 +1610,141 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
 - Removing a driver who has not yet accepted their invitation → should be allowed
 
 **Cross-portal verification**: After completing this test, run **TC-XP-030** in [09-cross-portal-impact-uat.md](09-cross-portal-impact-uat.md) to confirm the change reaches the customer front-end / driver portal.
+
+---
+
+## Team Management
+
+Team Management allows vendor owners and managers to add and remove the staff who have access to Vendor Admin. Unlike drivers (who self-register via an invitation email), team members are created directly — a Microsoft Entra ID account is provisioned immediately and a temporary password is shown once.
+
+### TC-VA-076: View Team Members List
+
+**Given**: You are logged in as a Vendor Admin user
+
+**Steps**:
+1. Navigate to **Team** in the sidebar
+2. Observe the team members list
+
+**Expected Result**:
+- A table displays all current team members with columns: name, email, roles, date added, and actions
+- An **Add User** button is visible
+- A **Delete** button is available on each row
+
+**Pass Criteria**:
+- ✅ All team members are listed
+- ✅ Role badges are displayed for each user
+- ✅ Date added is visible
+- ✅ Add User button is present
+
+**Edge Cases**:
+- No team members (brand-new vendor) → table should be empty but the Add User button should still be shown
+
+---
+
+### TC-VA-077: Add a New Team Member
+
+**Given**: You are viewing the Team list
+
+**Steps**:
+1. Click **Add User**
+2. Enter a valid email address (use a test address that does not already have a WantFood account)
+3. Enter first name and last name
+4. Leave display name blank
+5. Select role **Staff** (default)
+6. Click **Add User**
+
+**Expected Result**:
+- The form submits successfully
+- You are redirected to the **Account Created** screen
+- The Account Created screen shows:
+  - The new user's name and email address
+  - A **temporary password** in a read-only field with a Copy button
+  - A warning that the password is shown **only once** and is never stored
+  - An **Add Another User** button and a **Back to Team** button
+- After clicking **Back to Team**, the new user appears in the team list
+
+**Pass Criteria**:
+- ✅ User is created successfully
+- ✅ Temporary password is displayed on the Account Created screen
+- ✅ Copy button is present and functional
+- ✅ New user appears in the team list after returning
+- ✅ Warning about copying the password is clearly visible
+
+**Edge Cases**:
+- Missing required field (email, first name, last name) → validation error shown, form not submitted
+- Invalid email format → validation error shown
+- Email already exists as a WantFood user → should return an error (duplicate account prevention)
+- Navigating away from Account Created without copying → password cannot be retrieved; user must be deleted and recreated
+
+---
+
+### TC-VA-078: Copy Temporary Password
+
+**Given**: You are on the Account Created screen after adding a team member
+
+**Steps**:
+1. Click the **Copy** button next to the temporary password field
+2. Open a text editor or browser address bar
+3. Paste (Ctrl+V / Cmd+V)
+
+**Expected Result**:
+- The temporary password is copied to the clipboard
+- The text pasted matches the password shown in the read-only field exactly
+
+**Pass Criteria**:
+- ✅ Copy button is present and functional
+- ✅ Clipboard content matches the displayed password exactly
+
+**Edge Cases**:
+- Test in both Chrome and Safari (clipboard API behaviour differs by browser and requires HTTPS)
+
+---
+
+### TC-VA-079: Add Team Member With Role Owner
+
+**Given**: You are on the Add User form
+
+**Steps**:
+1. Fill in all required fields with valid test data
+2. Select role **Owner** from the Role dropdown
+3. Click **Add User**
+
+**Expected Result**:
+- User is created with Owner role
+- Account Created screen is shown
+- After returning to the Team list, the user's role badge shows **Owner**
+
+**Pass Criteria**:
+- ✅ Role dropdown contains: Owner, Manager, Staff
+- ✅ Owner role is saved and shown in the list
+
+---
+
+### TC-VA-079a: Delete a Team Member
+
+**Given**: You have at least one team member in the list (ideally a test user created for this purpose — do **not** delete your own account)
+
+**Steps**:
+1. Navigate to **Team**
+2. Find the test user
+3. Click **Delete**
+4. Confirm the deletion in the confirmation prompt
+
+**Expected Result**:
+- A success message appears
+- The deleted user is removed from the team list
+- The deleted user's Microsoft Entra account is also removed (they can no longer sign in to Vendor Admin)
+
+**Pass Criteria**:
+- ✅ User is removed from the list
+- ✅ Success message is shown
+- ✅ Attempting to sign in as the deleted user fails (run TC-AC-054 to verify)
+
+**Edge Cases**:
+- Clicking Delete and then cancelling the confirmation → user should NOT be deleted
+- Attempting to delete the only remaining user (yourself) → should be blocked or warned
+
+**Cross-portal verification**: After completing TC-VA-079a, run **TC-AC-054** in [10-permissions-and-account-uat.md](10-permissions-and-account-uat.md) to confirm the deleted user can no longer sign in.
 
 ---
 

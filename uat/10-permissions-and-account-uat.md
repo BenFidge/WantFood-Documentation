@@ -94,6 +94,8 @@ below each step so you know what to expect.
    - [TC-AC-051: Transferred vendor user sees new vendor](#tc-ac-051-transferred-vendor-user-sees-new-vendor-after-next-login)
    - [TC-AC-052: Deleted admin user can no longer sign in](#tc-ac-052-deleted-admin-user-can-no-longer-sign-in)
    - [TC-AC-053: Disabled vendor sees correct message](#tc-ac-053-vendor-admin-user-whose-vendor-is-disabled-sees-correct-message)
+   - [TC-AC-054: Vendor-created team member first sign-in](#tc-ac-054-vendor-created-team-member-signs-in-for-the-first-time)
+   - [TC-AC-055: Deleted vendor team member cannot sign in](#tc-ac-055-deleted-vendor-team-member-can-no-longer-sign-in)
 8. [Section H — GDPR and Data Lifecycle](#section-h--gdpr-and-data-lifecycle)
    - [TC-AC-060: View account information page](#tc-ac-060-view-account-information-page)
    - [TC-AC-061: Request data export](#tc-ac-061-request-data-export--feature-to-be-confirmed)
@@ -966,6 +968,73 @@ portal (ask your PM to disable a test vendor before running this test)
 - ✅ Disabled vendor's user cannot access the Vendor Admin portal
 - ✅ The message is clear and friendly — it explains the account is disabled (not a generic error)
 - ✅ User is given a contact point (e.g. "Please contact your WantFood account manager")
+
+---
+
+### TC-AC-054: Vendor-created Team Member Signs In for the First Time
+
+**Paired with**: TC-VA-077 (Vendor Admin → Team → Add User)
+
+**Given**: TC-VA-077 has been completed and a new team member account was created. You have the temporary
+password that was shown on the Account Created screen.
+
+**Steps**:
+1. Open an incognito browser window.
+2. Navigate to the **Vendor Admin UAT URL**.
+3. On the Microsoft sign-in page, enter the new user's email address.
+4. Enter the **temporary password** copied from the Account Created screen.
+5. Microsoft Entra will prompt you to **set a new password** — enter a new secure password and confirm it.
+6. Complete the sign-in flow.
+7. Confirm the Vendor Admin dashboard loads.
+
+**Expected Result**:
+- The temporary password is accepted on first sign-in.
+- Microsoft Entra prompts for a new password (forced change on first sign-in).
+- After setting a new password, the Vendor Admin dashboard loads correctly.
+- The new user can navigate to core pages (Team, Orders, Menu).
+
+**Pass Criteria**:
+- ✅ Temporary password accepted by Microsoft Entra
+- ✅ New password prompt shown on first sign-in
+- ✅ Vendor Admin dashboard loads after password change
+- ✅ New user can access Vendor Admin features
+
+**Edge Cases**:
+- Entering the wrong temporary password → Entra should show an "incorrect credentials" error (not a WantFood error)
+- Entering a new password that does not meet complexity requirements → Entra shows its own password-policy error
+
+---
+
+### TC-AC-055: Deleted Vendor Team Member Can No Longer Sign In
+
+**Paired with**: TC-VA-079a (Vendor Admin → Team → Delete)
+
+**Given**: TC-VA-079a has been completed and a test team member has been deleted via the Vendor Admin Team list.
+
+**Steps**:
+1. Sign out of all portals.
+2. Open an incognito browser window.
+3. Navigate to the **Vendor Admin UAT URL**.
+4. On the Microsoft sign-in page, enter the deleted team member's email address.
+5. Attempt to sign in using the deleted user's known password.
+6. Note the result.
+
+**Expected Result**:
+- The deleted team member's Entra ID account no longer exists.
+- Microsoft Entra shows a sign-in error (account not found / incorrect credentials).
+- The user cannot reach the Vendor Admin portal.
+
+> **Note**: Unlike vendor user deletion by System Admin (TC-AC-050), where the Entra account may persist and
+> only WantFood authorisation is removed, vendor team member deletion also removes the underlying Entra account.
+> The sign-in failure therefore happens at the Entra level, before WantFood is even reached.
+
+**Pass Criteria**:
+- ✅ Sign-in attempt fails at the Microsoft Entra sign-in page
+- ✅ Deleted user cannot reach the Vendor Admin dashboard
+
+**Edge Cases**:
+- If the deleted user is currently signed in (active session) when they are deleted → their session remains valid
+  until it expires (up to 1 hour). Confirm that after the session expires they cannot sign in again.
 
 ---
 
