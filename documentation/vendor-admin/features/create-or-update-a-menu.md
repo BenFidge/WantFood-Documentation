@@ -13,8 +13,10 @@ Menu builder list -> Menu editor.
 ## How it works
 1. Open the menu builder list.
 2. Create a new menu or open an existing menu.
-3. Update the menu-level information and structure.
-4. Save the changes before you move into publication or further dish work.
+3. Choose whether to edit manually in Menu editor or use AI menu scan import.
+4. If you use AI menu scan, upload menu images or PDF, review delta for existing menus, and import.
+5. Update any remaining menu-level information and structure in Menu editor.
+6. Save the changes before you move into publication or further dish work.
 
 ## Expected result
 The menu record reflects the current structure and details you want to manage.
@@ -23,4 +25,3 @@ The menu record reflects the current structure and details you want to manage.
 - [Menu builder list](../pages/menu-builder-list.md)
 - [Menu editor](../pages/menu-editor.md)
 - [Publish a menu](publish-a-menu.md)
-

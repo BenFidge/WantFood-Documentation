@@ -12,6 +12,7 @@ Vendor dashboard -> Menu builder list.
 ## What you can do here
 - open an existing menu
 - create a new menu
+- start AI menu scan import for a new or existing menu
 - review the current publication or status state
 
 ## What good looks like
@@ -20,4 +21,3 @@ You can move into the correct menu maintenance workflow quickly.
 ## Related
 - [Menu editor](menu-editor.md)
 - [Create or update a menu](../features/create-or-update-a-menu.md)
-

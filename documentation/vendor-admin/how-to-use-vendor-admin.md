@@ -6,6 +6,7 @@ You use Vendor Admin to finish onboarding, pick the correct vendor or branch con
 - Use [Apply](pages/apply.md) and the onboarding pages when the business is still joining the platform.
 - Use [Vendor dashboard](pages/vendor-dashboard.md) once the account is active and you need a route into day-to-day work.
 - Use [Manage restaurant](pages/manage-restaurant.md) and [Menu editor](pages/menu-editor.md) for catalogue and profile maintenance.
+- Use [Menu builder list](pages/menu-builder-list.md) when you want to run AI menu scan import or choose a menu for manual editing.
 - Use [Orders kanban dashboard](pages/orders-kanban-dashboard.md) for live kitchen and dispatch work.
 - Use [Drivers list](pages/drivers-list.md) when you need to invite or maintain drivers.
 - Use [Vendor offers list](pages/vendor-offers-list.md), [Reviews list](pages/reviews-list.md), [Delivery costs](pages/delivery-costs.md), and [Payment methods](pages/payment-methods.md) for commercial and settings work.
@@ -33,4 +34,3 @@ You use Vendor Admin to finish onboarding, pick the correct vendor or branch con
 ## Related
 - [Vendor Admin index](index.md)
 - [WantFood documentation index](../index.md)
-

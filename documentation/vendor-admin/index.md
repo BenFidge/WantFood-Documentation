@@ -19,7 +19,7 @@ This section contains the definitive Vendor Admin documentation set for WantFood
 | [Vendor dashboard](pages/vendor-dashboard.md) | You use this page as the main working home for the currently selected vendor or branch. |
 | [No vendor context](pages/no-vendor-context.md) | You see this page or state when you are signed in but do not yet have an active vendor or branch context selected. |
 | [Manage restaurant](pages/manage-restaurant.md) | You use this page to maintain the restaurant profile and branch-facing information for the current context. |
-| [Menu builder list](pages/menu-builder-list.md) | You use this page to review the menus that belong to the current vendor context and choose which one to maintain. |
+| [Menu builder list](pages/menu-builder-list.md) | You use this page to review menus, open menu editing, and start AI menu scan import for the current vendor context. |
 | [Menu editor](pages/menu-editor.md) | You use this page as the main workspace for structured menu editing and publishing. |
 | [Orders kanban dashboard](pages/orders-kanban-dashboard.md) | You use this page to manage live incoming and in-progress orders in a kitchen-focused board view. |
 | [All orders](pages/all-orders.md) | You use this page to review a broader history of orders beyond the live kanban view. |
@@ -36,7 +36,7 @@ This section contains the definitive Vendor Admin documentation set for WantFood
 | --- | --- |
 | [Switch vendor or branch context](features/switch-vendor-or-branch-context.md) | You use this workflow when you need the admin site to operate against a different vendor or branch than the one currently selected. |
 | [Update branch details](features/update-branch-details.md) | You use this workflow to change branch-specific restaurant information from the restaurant management area. |
-| [Create or update a menu](features/create-or-update-a-menu.md) | You use this workflow when the current vendor context needs a new menu or a maintenance update to an existing one. |
+| [Create or update a menu](features/create-or-update-a-menu.md) | You use this workflow when the current vendor context needs a new menu, an AI scan import, or a maintenance update to an existing one. |
 | [Publish a menu](features/publish-a-menu.md) | You use this workflow when a menu is ready to become visible in downstream customer-facing experiences. |
 | [Reorder categories and dishes](features/reorder-categories-and-dishes.md) | You use this workflow when the menu should present categories or dishes in a different sequence. |
 | [Manage dish content and images](features/manage-dish-content-and-images.md) | You use this workflow to create, edit, move, or remove dish content and the images attached to it. |
@@ -49,4 +49,3 @@ This section contains the definitive Vendor Admin documentation set for WantFood
 | [Configure delivery costs](features/configure-delivery-costs.md) | You use this workflow to update the delivery pricing rules for the current vendor or branch. |
 | [Configure payment methods](features/configure-payment-methods.md) | You use this workflow to update which payment methods the current vendor can offer and how the payment connection is configured. |
 | [Manage team members](features/manage-team-members.md) | You use this workflow to add or remove the staff members who have access to Vendor Admin for the current vendor account. |
-

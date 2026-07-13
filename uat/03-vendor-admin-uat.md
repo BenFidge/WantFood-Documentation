@@ -986,7 +986,7 @@ The dish create/update form in Menu Builder supports **Variants** (Name, Price, 
 
 ## Menu Scanning (AI Import)
 
-The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded photos or a PDF. The flow runs through four steps: **Upload** → **Review** → **Confirm** → **Result**. A `scanId` is passed between steps via TempData.
+The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded photos or a PDF. The flow uses a wizard layout with three steps: **Upload pages** → **Review and delta** → **Import complete**.
 
 ### TC-VA-046: Upload Menu Photos for Scanning
 
@@ -995,17 +995,21 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
 **Steps**:
 1. Navigate to **Menu** → **Scan Menu** (or **Menu Scan**)
 2. Select the target menu from the **MenuId** dropdown (or enter a new **MenuName**)
-3. Upload one JPEG photo of a printed menu — confirm it is accepted
-4. Upload one PNG photo — confirm it is accepted
-5. Upload one PDF — confirm it is accepted
-6. Attempt to upload a `.txt` file — confirm it is rejected
-7. Attempt to upload a file that exceeds the maximum allowed size — confirm it is rejected with a size-limit error
-8. Submit the upload form with valid files
+3. Verify the upload area is shown as a drag-and-drop dropzone
+4. Upload one JPEG photo of a printed menu — confirm it is accepted
+5. Upload one PNG photo — confirm it is accepted
+6. Upload one PDF — confirm it is accepted
+7. Remove one selected file from the list and re-add it
+8. Verify the selected menu context is still correct
+9. Click **Scan menu**
+10. Attempt to upload a `.txt` file — confirm it is rejected
+11. Attempt to upload a file that exceeds the maximum allowed size — confirm it is rejected with a size-limit error
 
 **Expected Result**:
 - JPEG, PNG, and PDF files are accepted
 - Unsupported file types are rejected with a clear error message
 - Oversized files are rejected with a clear error message referencing the size limit
+- Dropzone accepts click-to-browse and drag-and-drop input
 - Upload progress is shown during upload
 - On success, the user is redirected to the Review step
 
@@ -1015,6 +1019,7 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
 - ✅ PDF accepted
 - ✅ Unsupported file type rejected with error
 - ✅ Oversized file rejected with size-limit error
+- ✅ Dropzone interaction works for drag-and-drop and click upload
 - ✅ Upload progress indicator visible
 - ✅ Redirected to Review step on success
 
@@ -1032,50 +1037,50 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
 **Steps**:
 1. Observe the list of dishes extracted by the AI scanner
 2. Verify that dish names and prices appear to match the uploaded menu
-3. Edit at least one dish name inline to correct a scanning error
-4. Edit at least one price value
-5. Remove at least one dish from the import list
-6. Click **"Continue"** or **"Proceed to Confirm"**
+3. If scanning into an existing menu, inspect the delta sections for **Added**, **Removed**, and **Changed** items
+4. Verify at least one known changed dish (name or price) appears in delta
+5. Trigger **Re-scan** with updated source images or PDF
+6. Wait for re-scan completion and confirm menu context remains unchanged
+7. Click **Import menu**
 
 **Expected Result**:
-- Extracted dishes are presented in an editable list
-- Dish names and prices can be edited inline
-- Individual dishes can be removed before import
-- All edits are preserved when moving to the Confirm step
+- Existing menu imports show a visual delta (added, removed, changed)
+- Re-scan updates extraction output without losing selected menu context
+- Import action runs directly from Review and redirects to Result
 
 **Pass Criteria**:
 - ✅ Extracted dishes are displayed
-- ✅ Names and prices are editable inline
-- ✅ Dishes can be removed
-- ✅ Edits are preserved on the Confirm step
+- ✅ Delta view is visible for existing menu imports
+- ✅ Re-scan action succeeds and retains menu context
+- ✅ Import action is available from Review
 
 **Edge Cases**:
 - AI extracts zero dishes → should show "No dishes detected" with an option to go back to Upload
 - AI extracts 50+ dishes → list should scroll or paginate correctly
-- Dish name containing special characters (e.g. é, ñ, &) → characters should be preserved after editing
+- Dish name containing special characters (for example, é or ñ) should be preserved
 
 ---
 
-### TC-VA-048: Confirm and Import Scanned Menu
+### TC-VA-048: Import Scanned Menu
 
-**Given**: You are on the Confirm step after reviewing extracted dishes in TC-VA-047
+**Given**: You are on the Review step after scanning in TC-VA-046 and validating output in TC-VA-047
 
 **Steps**:
-1. Review the final list of dishes to be imported
-2. Click **"Confirm Import"**
+1. Review the extracted output and, if applicable, the delta summary
+2. Click **Import menu**
 3. Wait for the import to complete
 4. Navigate to **Menu Builder** and open the target menu
 
 **Expected Result**:
 - A success message appears: "Menu import completed" (or similar)
 - All confirmed dishes are present in the target menu in Menu Builder
-- Dish names and prices match the values edited in TC-VA-047
+- For existing menus, final state reflects the accepted delta
 - The Result page is displayed (proceed to TC-VA-049)
 
 **Pass Criteria**:
 - ✅ Import completes without errors
 - ✅ All confirmed dishes are present in Menu Builder
-- ✅ Names and prices match the Review step values
+- ✅ Existing menu changes match delta expectations
 - ✅ Success message displayed
 
 **Edge Cases**:
@@ -1093,24 +1098,100 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
 
 **Steps**:
 1. Observe the **Result** page
-2. Verify the summary information: number of dishes imported and the target menu name
-3. Click **"View Menu"** (or equivalent) to navigate to Menu Builder
+2. Verify the summary information: category count, dish count, and optional variant count
+3. Click **Open menu builder** to navigate to Menu Builder
 4. Return to the Result page (or use the browser back button)
-5. Click **"Start New Scan"** to begin another scan
+5. Click **Scan again** to begin another scan in the same menu context
 
 **Expected Result**:
-- The Result page shows a clear summary: number of dishes imported and the target menu name
-- "View Menu" navigates correctly to the target menu in Menu Builder
-- "Start New Scan" returns to the Upload step with a clean state (no residual `scanId` TempData)
+- The Result page shows a clear summary including category and dish counts
+- **Open menu builder** navigates correctly to the target menu in Menu Builder
+- **Scan again** returns to the Upload step with the selected menu context preserved
 
 **Pass Criteria**:
 - ✅ Result page displays correct import summary
-- ✅ "View Menu" navigates to Menu Builder correctly
-- ✅ "Start New Scan" works and resets state cleanly
+- ✅ **Open menu builder** navigates to Menu Builder correctly
+- ✅ **Scan again** starts a new scan cycle correctly
 
 **Edge Cases**:
 - Navigating directly to the Result page URL without completing a scan → should redirect to the Upload step or show an appropriate error
 - Using the browser back button from the Result page → should not re-trigger the import
+
+---
+
+### TC-VA-049A: Existing Menu Import Shows Delta Before Commit
+
+**Given**: You start Menu Scan against an existing menu that already has categories and dishes
+
+**Steps**:
+1. Run upload and review steps for an existing menu
+2. Inspect the delta sections for **Added**, **Removed**, and **Changed** items on Review
+3. Verify at least one known changed dish (name or price) appears in delta
+4. Import from the Review step
+5. Open Menu Builder and compare final menu state
+
+**Expected Result**:
+- Review step displays a clear visual delta between existing menu and scanned result
+- Added, removed, and changed items are classified correctly
+- Final menu state matches accepted delta after commit
+
+**Pass Criteria**:
+- ✅ Delta view is visible before commit for existing menu imports
+- ✅ Delta classification is accurate for sampled items
+- ✅ Post-import menu state matches accepted changes
+
+**Edge Cases**:
+- No differences found → delta indicates no changes and import can be skipped or completed safely
+- Large menu changes (100+ items) → delta remains readable and performant
+
+---
+
+### TC-VA-049B: Re-Scan Existing Menu Before Commit
+
+**Given**: You are in the Menu Scan flow for an existing menu and have reached Review
+
+**Steps**:
+1. Trigger **Re-Scan** with updated source images/PDF
+2. Wait for re-scan completion
+3. Confirm the latest extracted items replace prior scan results
+4. Verify menu context (selected existing menu) remains unchanged
+5. Complete import
+
+**Expected Result**:
+- Re-scan updates extraction output in-place without losing selected menu context
+- Latest extraction is what gets committed
+- Import completes without creating duplicate menu records
+
+**Pass Criteria**:
+- ✅ Re-scan action succeeds
+- ✅ Existing menu context is preserved
+- ✅ Final import reflects latest re-scan output
+
+**Edge Cases**:
+- Re-scan returns fewer items than first scan → removed items appear in delta
+- Re-scan fails → user sees error and can retry without losing current session
+
+---
+
+### TC-VA-049C: New Menu Import Saves as Unpublished
+
+**Given**: You start Menu Scan with a new menu name (not an existing menu)
+
+**Steps**:
+1. Complete scan flow and confirm import
+2. Open Menu Builder list
+3. Locate the imported menu
+
+**Expected Result**:
+- Imported menu is created successfully
+- Menu status is **Draft/Unpublished** until vendor explicitly publishes
+
+**Pass Criteria**:
+- ✅ New imported menu exists
+- ✅ Menu is not auto-published
+
+**Edge Cases**:
+- Existing published menu remains active while new scanned menu stays unpublished
 
 ---
 

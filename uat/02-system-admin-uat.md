@@ -320,6 +320,74 @@ Each test case follows this format:
 
 ---
 
+### TC-SA-032A: Review Branch Details Tab in Vendor Record
+
+**Given**: You are viewing an existing vendor in System Admin
+
+**Steps**:
+1. Open the vendor's **Details** page
+2. Verify the page shows separate tabs for **Vendor Profile** and **Branch Details**
+3. Open **Branch Details**
+4. Confirm each branch row shows branch name, status, and default branch marker
+5. Open the vendor's **Edit** page
+6. Verify the same tab structure is present and branch details render without errors
+
+**Expected Result**:
+- Branch data is shown under the **Branch Details** tab on both Details and Edit views
+- Vendors with multiple branches show all branches
+- Vendors with no branches show a clear empty state
+- Nullable branch fields (for example average rating, delivery fee, ETA) do not cause errors
+
+**Pass Criteria**:
+- ✅ Tabs render on Details and Edit views
+- ✅ Branch rows are visible and accurate
+- ✅ Default branch is identifiable
+- ✅ No JSON/deserialization errors when nullable branch values exist
+
+**Edge Cases**:
+- Branch has null numeric fields → UI shows placeholders instead of crashing
+- Vendor has exactly one branch → default branch marker is still shown
+- Vendor has no payment configuration yet → page still loads
+
+---
+
+### TC-SA-032B: AI Menu Scan Wizard Creates Vendor and Initial Menu
+
+**Given**: You are logged in as System Admin and have menu brochure files for a new vendor
+
+**Steps**:
+1. Navigate to **Vendors** → **Brochure Scan**
+2. Upload valid brochure/menu files and start scan
+3. Wait for extraction to complete and open the preview step
+4. Edit business details before save (name, contact email, address)
+5. Use **Re-Scan** and confirm updated extraction is displayed
+6. Continue and save the wizard
+7. Open the created vendor in System Admin
+8. Verify invitation email send event/log outcome (or mail outbox, if available)
+9. Open Menu Builder in AI scan mode for the created vendor and branch
+
+**Expected Result**:
+- Wizard creates vendor and initial unpublished menu in one flow
+- Editable business details are persisted from the final preview before save
+- Re-scan replaces extraction output without losing wizard flow state
+- Vendor has a default branch after creation
+- Invitation email is sent using the same pattern as approved vendor applications
+- User can continue into Menu Builder with created vendor and default branch context
+
+**Pass Criteria**:
+- ✅ Vendor record created successfully
+- ✅ Default branch exists and is linked to vendor
+- ✅ Initial menu exists in unpublished state
+- ✅ Invitation email send is triggered
+- ✅ Redirect to menu editing context succeeds
+
+**Edge Cases**:
+- Scan returns partial business details → admin can correct fields before save
+- Re-scan returns different menu structure → final saved result matches latest scan
+- Duplicate vendor name/slug conflict → validation blocks save with actionable error
+
+---
+
 ### TC-SA-033: Activate Vendor
 
 **Given**: You are viewing an inactive vendor's details page

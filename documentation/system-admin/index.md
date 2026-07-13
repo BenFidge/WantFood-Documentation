@@ -15,6 +15,7 @@ This section contains the definitive System Admin documentation set for WantFood
 | [Applications list](pages/applications-list.md) | You use this page to review submitted vendor applications and decide which record needs action next. |
 | [Application details](pages/application-details.md) | You use this page to review the submitted business information for one vendor application. |
 | [Vendors list](pages/vendors-list.md) | You use this page to find and review vendor records that are already on the platform. |
+| [Brochure scan](pages/brochure-scan.md) | You use this page to create a new vendor and seed its first menu from brochure scans in one wizard flow. |
 | [Vendor details](pages/vendor-details.md) | You use this page to review the platform view of one vendor before making changes. |
 | [Vendor users list](pages/vendor-users-list.md) | You use this page to review vendor-linked users and correct ownership or access problems. |
 | [Users list](pages/users-list.md) | You use this page to manage internal admin users who can access the System Admin site. |
@@ -63,4 +64,3 @@ This section contains the definitive System Admin documentation set for WantFood
 | [Manage bad words](features/manage-bad-words.md) | You use this workflow to maintain the blocked-word list that supports content safety. |
 | [Configure payment providers](features/configure-payment-providers.md) | You use this workflow to add, update, or remove platform payment provider settings. |
 | [Run platform tools](features/run-platform-tools.md) | You use this workflow when you need to refresh, rebuild, reindex, import, or validate platform data through the admin tools surface. |
-
