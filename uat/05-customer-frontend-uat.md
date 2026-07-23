@@ -300,6 +300,7 @@ Authentication is handled by **Entra ID (Azure AD B2C)**. There are no local sig
   - Opening hours and current status (Open/Closed)
   - Delivery fee, estimated delivery time, minimum order value
   - Menu sections with categories and dishes
+- If a dish belongs to multiple categories, it appears under each assigned category section
 - You can click on a dish to view its details
 - You can add dishes to your basket from this page
 
@@ -312,6 +313,7 @@ Authentication is handled by **Entra ID (Azure AD B2C)**. There are no local sig
 - Vendor is closed → should display "Currently closed" and prevent adding items
 - Vendor has no reviews → should show "No reviews yet"
 - Very long menu (50+ dishes) → should scroll or paginate correctly
+- Same dish assigned to multiple categories → dish card renders in each relevant category without broken anchors or jump links
 
 ---
 
@@ -340,6 +342,34 @@ Authentication is handled by **Entra ID (Azure AD B2C)**. There are no local sig
 - Dish with no image → should show placeholder
 - Dish with multiple option groups → all options are displayed and selectable
 - Dish unavailable → should show "Currently unavailable" and disable "Add to Basket"
+
+---
+
+### TC-FE-022: Dish upsell ordering and visibility
+
+**Given**: You are on a dish detail page for a published dish that has upsell links configured
+
+**Steps**:
+1. Open a dish detail page that has at least one available upsell dish.
+2. Scroll below the main dish content.
+3. Observe the section order around recommendations and reviews.
+4. Click one upsell card in **You might also like**.
+5. Use browser back to return to the original dish page.
+
+**Expected Result**:
+- **You might also like** appears above **Dish reviews**.
+- Upsell cards show dish name, price, and image when available.
+- Selecting an upsell card opens that upsell dish detail page in the same vendor and branch context.
+
+**Pass Criteria**:
+- ✅ Recommendation section renders before reviews
+- ✅ Upsell cards link to the correct dish pages
+- ✅ Returning back preserves the original dish page state
+
+**Edge Cases**:
+- Dish has no upsell links → **You might also like** does not render.
+- Dish has upsell links but some are unavailable → unavailable upsells are not shown.
+- Dish has reviews but no upsells → reviews still render normally.
 
 ---
 

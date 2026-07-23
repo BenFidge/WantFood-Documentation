@@ -427,6 +427,7 @@ The table below shows every admin change covered in this document, the customer-
    - **Price**: `£6.50`
    - **Calories**: `420`
    - **Available**: toggled ON
+   - **Categories**: select both `Starters` and `Chef Specials`
 3. Click **Save**.
 
 #### Propagate
@@ -436,6 +437,7 @@ The table below shows every admin change covered in this document, the customer-
 #### Verify After (Add)
 
 - ☐ **Vendor page** → Starters category: "Truffle Fries" dish card is visible with the correct name, description, price (£6.50), and calorie count (420 kcal). Screenshot.
+- ☐ **Vendor page** → Chef Specials category: "Truffle Fries" is also visible in this second category. Screenshot.
 - ☐ **Search results** (`/search?q=truffle+fries`): The dish appears in results linked to Pizza Roma. Screenshot.
 - ☐ **Dish detail page** (click the dish): Correct name, description, price, calories shown.
 
@@ -449,6 +451,7 @@ The table below shows every admin change covered in this document, the customer-
 #### Verify After (Edit)
 
 - ☐ **Vendor page**: Truffle Fries now shows **£7.00** and the updated description.
+- ☐ **Category reassignment check**: remove `Chef Specials`, keep `Starters`, save, and verify it no longer appears under `Chef Specials` but still appears under `Starters`.
 - ☐ **Basket** (if a customer had added Truffle Fries at £6.50 before the price change): The basket **should update** the price to £7.00, or warn the customer that the price has changed. The customer should **not** be able to check out at the old price. Screenshot the basket showing the updated price.
 - ☐ **Dish detail page**: Reflects new price and description.
 

@@ -338,11 +338,14 @@ Each test case follows this format:
 - Vendors with no branches show a clear empty state
 - Nullable branch fields (for example average rating, delivery fee, ETA) do not cause errors
 
+> **Note on Taking Orders / Scheduled Orders**: `IsAcceptingOrders` and `AcceptsScheduledOrders` are **branch-level** flags managed by the vendor via **Vendor Admin** (Dashboard, Kanban, and Branch Settings tab). System Admin does **not** expose a taking-orders toggle for vendors. The Branch Details tab in System Admin is read-only for these fields — it may show current state for diagnostics but the vendor controls them.
+
 **Pass Criteria**:
 - ✅ Tabs render on Details and Edit views
 - ✅ Branch rows are visible and accurate
 - ✅ Default branch is identifiable
 - ✅ No JSON/deserialization errors when nullable branch values exist
+- ✅ No "Taking Orders" toggle is present in the System Admin vendor views
 
 **Edge Cases**:
 - Branch has null numeric fields → UI shows placeholders instead of crashing

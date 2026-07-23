@@ -14,12 +14,12 @@ Menu editor.
 1. Open the dish or category area in the menu editor.
 2. Create, edit, move, or remove the dish content you need to change.
 3. Upload or update imagery if the dish needs it.
-4. Save the change and allow image processing and propagation to complete.
+4. If needed, open the upsell link panel for a dish and update dish-to-dish suggestions.
+5. Save the change and allow image processing and propagation to complete.
 
 ## Expected result
-Dish content and images reflect the current menu plan.
+Dish content, images, and upsell suggestions reflect the current menu plan.
 
 ## Related
 - [Menu editor](../pages/menu-editor.md)
 - [Automation and background jobs](../../cross-cutting/automation-and-background-jobs.md)
-

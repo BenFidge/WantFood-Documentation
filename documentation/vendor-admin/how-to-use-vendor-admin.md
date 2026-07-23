@@ -16,6 +16,7 @@ You use Vendor Admin to finish onboarding, pick the correct vendor or branch con
 2. Use the page that owns the record you need to change.
 3. Use the matching feature workflow when the action changes state, publication, pricing, or access.
 4. If a change affects search, menu visibility, or image processing, allow the related background or propagation behaviour to catch up.
+5. When you maintain dishes in Menu editor, use category assignments to place a dish in one or more categories, and keep at least one category selected.
 
 ## Common workflows
 - [Switch vendor or branch context](features/switch-vendor-or-branch-context.md)

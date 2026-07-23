@@ -20,6 +20,10 @@ The orders kanban dashboard is the kitchen-focused live view of all active order
 
 Completed and cancelled orders drop off the live board and appear in the All Orders history view.
 
+## Branch context card on the kanban page
+
+The same branch context card shown on the dashboard also appears at the top of the kanban page. It shows the current branch name and the **Taking Orders** and **Scheduled Orders** toggles. You can suspend or resume order acceptance directly from this page without leaving the live orders view. Changes made here are identical to changes made on the dashboard — the state is shared.
+
 ## How to accept an order
 
 When a new order appears in the Incoming column, review the order details by clicking the card. Confirm you can fulfil the order and click Accept. The order moves to In Progress. There is a time window for acceptance — if no action is taken within the allowed period, the order may be automatically rejected.

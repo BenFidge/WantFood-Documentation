@@ -22,7 +22,15 @@ Always confirm the correct vendor or branch context is active before making chan
 
 ## Vendor-level vs branch-level information
 
-Some information belongs to the vendor as a whole — for example the legal business name or the top-level brand identity. Other information is branch-specific — for example the trading address, phone number, and opening hours.
+Some information belongs to the vendor as a whole — for example the legal business name or the top-level brand identity. Other information is branch-specific — for example the trading address, phone number, opening hours, and order-acceptance settings.
+
+The following fields are branch-level and are managed on the Branch tab of the Manage Restaurant page:
+
+- Trading address and contact details.
+- Opening hours and trading days.
+- Cuisine types.
+- **Taking Orders** (`IsAcceptingOrders`) — whether the branch is currently accepting new customer orders. This can also be toggled quickly from the dashboard and kanban context card without opening branch settings.
+- **Scheduled Orders** (`AcceptsScheduledOrders`) — whether customers can book future delivery slots. The quick-toggle on the dashboard and kanban changes this field. The full scheduled-orders configuration (max schedule ahead hours, prep lead time, slot interval) is only editable here on the Branch tab.
 
 When you update fields on the Manage Restaurant page, the changes apply to the currently active context (the vendor or branch shown in the context selector). If you manage multiple branches and need to update each one separately, switch context between each update.
 

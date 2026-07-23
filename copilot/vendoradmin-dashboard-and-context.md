@@ -10,9 +10,18 @@ This document covers the vendor dashboard, the no vendor context state, how to s
 
 ## Vendor dashboard
 
-The vendor dashboard is the main working home for the currently selected vendor or branch. It shows today''s order summary — incoming, in-progress, and completed orders for the current day — quick links to Orders, Menu, Drivers, Offers, and Settings, and any alerts relevant to the current context.
+The vendor dashboard is the main working home for the currently selected vendor or branch. It shows today's order summary — incoming, in-progress, and completed orders for the current day — quick links to Orders, Menu, Drivers, Offers, and Settings, and any alerts relevant to the current context.
 
 Start from the dashboard at the beginning of every session to understand the current state before moving to a specific task.
+
+## Branch context card
+
+The branch context card appears at the top of the dashboard (and also at the top of the Orders kanban page). It always shows the current branch name and two live toggles:
+
+- **Taking Orders** — when on, the branch is accepting new customer orders. When off, no new orders can be placed for this branch on the customer front-end.
+- **Scheduled Orders** — when on, customers can book future delivery slots during checkout. When off, only immediate (ASAP) orders are available.
+
+Both toggles update instantly without a page reload. Changes apply only to the currently selected branch. The context card is always visible — even if you only manage one branch — so you can change branch status from the dashboard or kanban at any time without navigating to branch settings.
 
 ## No vendor context state
 
@@ -26,6 +35,7 @@ To switch context:
 1. Locate the context selector in the top navigation.
 2. Click and select the vendor or branch you want.
 3. The page reloads with the new context active.
+4. The Taking Orders and Scheduled Orders toggles in the context card update to show the new branch's current state.
 
 Changes you make in one context do not affect other contexts. Before making any change, confirm the correct context is active.
 
@@ -38,6 +48,8 @@ If data looks wrong — wrong orders, wrong menu, wrong drivers — confirm the 
 ## Common dashboard navigation patterns
 
 - New order arrived: use the Orders quick link or kanban notification.
+- Branch going offline (kitchen full, early close): use the Taking Orders toggle in the context card.
+- Scheduled orders need enabling: use the Scheduled Orders toggle in the context card; configure timing parameters in Manage Restaurant → Branch tab.
 - Menu change needed: use the Menu quick link from the dashboard.
 - Promotion check: use the Offers quick link.
 - Configuration work: use Settings (delivery costs, payment methods).

@@ -97,8 +97,13 @@ Customers can decide whether to order from the selected vendor.
 **Purpose**  
 Shows a deeper view of a specific dish.
 
+**Key actions**
+- review dish details and options before adding to basket
+- browse **You might also like** dish suggestions
+- read dish reviews after recommendations
+
 **Expected outcome**  
-Customers can confirm details before adding the dish to the basket.
+Customers can confirm details, consider related dishes, and then continue to reviews or add the dish to the basket.
 
 ### Privacy page
 **Purpose**  

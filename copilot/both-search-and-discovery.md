@@ -11,6 +11,8 @@ This document covers how vendors and dishes become searchable, what controls ven
 
 WantFood uses Elasticsearch for vendor and dish search. Vendor and dish data is indexed during onboarding and updated whenever the vendor's profile, menu, or dishes change.
 
+For menu content, a dish can carry multiple category assignments. Search indexing stores that multi-category metadata so one dish can be matched and displayed correctly across all of its assigned categories in downstream experiences.
+
 Search indexing is not immediate — it happens through a background process. When vendor data changes (name, cuisine type, dish descriptions, availability), the change needs to be indexed before it appears in search results. This happens automatically as part of normal background processing, but it can be triggered manually if needed.
 
 ## What controls vendor placement and ranking in search results

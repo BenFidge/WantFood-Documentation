@@ -23,6 +23,7 @@ The menu builder list shows all menus belonging to the current vendor context. E
 The menu editor is the main workspace for structured menu editing. It displays the menu as a hierarchy of categories and dishes. From here you can:
 - Add, edit, and remove categories.
 - Add, edit, move, and remove dishes within categories.
+- Assign one dish to multiple categories using the category Select2 control.
 - Set dish prices, descriptions, and availability.
 - Upload dish images.
 - Reorder categories and dishes.
@@ -35,20 +36,33 @@ The menu editor is the main workspace for structured menu editing. It displays t
 
 ## How to add a dish
 
-1. Select the category you want the dish to belong to.
+1. Select any category to start from.
 2. Use the Add Dish action.
 3. Fill in the dish name, description, price, and any option groups or modifiers.
-4. Upload a dish image if available (see image upload notes below).
-5. Set the dish availability — whether it is always available or restricted to specific times.
-6. Save.
+4. In the category selector, choose one or more categories where the dish should appear.
+5. Keep at least one category selected.
+6. Upload a dish image if available (see image upload notes below).
+7. Set the dish availability — whether it is always available or restricted to specific times.
+8. Save.
 
 ## How to edit an existing dish
 
-Open the dish from the menu editor. Update any fields — name, description, price, options, image, or availability. Save when done. Changes to a published menu are visible to customers after the menu is re-published and caches refresh.
+Open the dish from the menu editor. Update any fields — name, description, price, options, image, availability, or category assignments. Save when done. Changes to a published menu are visible to customers after the menu is re-published and caches refresh.
+
+## How to manage dish upsell suggestions
+
+Use the upsell link action on the dish row (next to dish settings) to open the upsell panel.
+
+1. Tick or untick dishes in the category-grouped table.
+2. Use Auto-suggest to preselect likely matches, then adjust manually.
+3. Keep **This dish only** selected to save only the current dish, or choose a category in **Also apply to category** if you want to apply the same set to other dishes in that category.
+4. Click Save.
+
+When customers view dish details, **You might also like** appears above the dish reviews section.
 
 ## How to move a dish to a different category
 
-In the menu editor, use the move action on the dish to select a different category. The dish moves to the target category. Reorder it within the category if needed.
+In the menu editor, edit the dish category selector to add or remove category assignments. The dish appears in all selected categories and is removed from categories you clear. Reorder it within each category if needed.
 
 ## How to reorder categories and dishes
 

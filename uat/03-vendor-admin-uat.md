@@ -41,9 +41,14 @@ If any of this data is missing, contact your project manager before starting.
 
 1. [Vendor Application and Onboarding](#vendor-application-and-onboarding)
 2. [Vendor Context Switching](#vendor-context-switching)
+   - [TC-VA-012: Switch Between Branches](#tc-va-012-switch-between-branches)
+   - [TC-VA-013: Taking Orders Toggle — Dashboard](#tc-va-013-taking-orders-toggle--dashboard)
+   - [TC-VA-014: Scheduled Orders Quick-Toggle — Dashboard](#tc-va-014-scheduled-orders-quick-toggle--dashboard)
+   - [TC-VA-015: Branch Context Card — Live Order Kanban](#tc-va-015-branch-context-card--live-order-kanban)
 3. [Restaurant Management](#restaurant-management)
 4. [Trading Hours and Scheduled Orders](#trading-hours-and-scheduled-orders)
 5. [Menu Management](#menu-management)
+   - [TC-VA-037A: Manage dish upsell links](#tc-va-037a-manage-dish-upsell-links)
    - [Dish Variants and Modifiers](#dish-variants-and-modifiers)
    - [Menu Scanning (AI Import)](#menu-scanning-ai-import)
 6. [Live Order Kanban](#live-order-kanban)
@@ -183,11 +188,18 @@ If any of this data is missing, contact your project manager before starting.
 - The dashboard displays your vendor's name prominently
 - Key metrics are shown: today's orders, pending orders, total revenue (if available)
 - Navigation menu is accessible: Menu, Orders, Drivers, Offers, Reviews, Settings
+- A **Branch Context card** is visible in the top area showing:
+  - Current branch name
+  - **Taking Orders** toggle (reflects `IsAcceptingOrders` for the current branch)
+  - **Scheduled Orders** toggle (reflects `AcceptsScheduledOrders` for the current branch)
+- The branch switcher dropdown is always visible — even when the vendor has only one branch
 
 **Pass Criteria**:
 - ✅ Vendor name is correctly shown
 - ✅ Dashboard widgets load
 - ✅ Navigation is accessible
+- ✅ Branch Context card visible with both toggles
+- ✅ Branch switcher visible for single-branch vendors
 
 **Edge Cases**:
 - Dashboard with no orders → should show "No orders today" gracefully
@@ -233,14 +245,112 @@ If any of this data is missing, contact your project manager before starting.
 - The dashboard updates to show the selected branch's data
 - Orders, drivers, and settings reflect the selected branch
 - The branch name in the navigation updates
+- The **Taking Orders** and **Scheduled Orders** toggles in the Branch Context card update to reflect the newly selected branch's state
 
 **Pass Criteria**:
 - ✅ Branch context switches correctly
 - ✅ Branch-specific data is displayed
+- ✅ Taking Orders toggle reflects new branch's `IsAcceptingOrders`
+- ✅ Scheduled Orders toggle reflects new branch's `AcceptsScheduledOrders`
 
 **Edge Cases**:
 - Switching to a branch with no orders → should show "No orders" gracefully
 - Switching to a branch with no assigned drivers → should show "No drivers" gracefully
+- **Single-branch vendor**: The branch switcher dropdown must still be visible (even though only one branch can be selected), showing the current branch name
+
+---
+
+### TC-VA-013: Taking Orders Toggle — Dashboard
+
+**Given**: You are on the Vendor Admin Dashboard
+
+**Steps**:
+1. Locate the **Branch Context card** (showing current branch name)
+2. Note the current state of the **Taking Orders** toggle
+3. Click the toggle to turn **Taking Orders OFF** (if currently on)
+4. Observe the response — the toggle should update immediately
+5. Open the customer-facing front-end for the same branch and search for the restaurant
+6. Confirm the branch is shown as **closed / not accepting orders**
+7. Return to VendorAdmin Dashboard and toggle **Taking Orders back ON**
+8. Verify the customer front-end shows the branch as **open / accepting orders** again
+
+**Expected Result**:
+- Toggling off disables order acceptance for the current branch only (other branches unaffected)
+- Customer front-end reflects the change (branch hidden from search or shown as unavailable)
+- Toggling back on restores availability
+- No page reload required; the toggle is async
+
+**Pass Criteria**:
+- ✅ Toggle responds immediately with visual feedback
+- ✅ Branch `IsAcceptingOrders` state persists after page reload
+- ✅ Customer front-end reflects the change
+- ✅ Other branches (if any) are unaffected
+
+**Edge Cases**:
+- Network error during toggle → toggle should revert to previous state and show an error
+- Toggling off while an order is in-flight → existing orders continue; new orders are blocked
+
+**Cross-portal verification**: Run **TC-XP-002** in [09-cross-portal-impact-uat.md](09-cross-portal-impact-uat.md).
+
+---
+
+### TC-VA-014: Scheduled Orders Quick-Toggle — Dashboard
+
+**Given**: You are on the Vendor Admin Dashboard with `AcceptsScheduledOrders` already **enabled** in the Branch Settings
+
+**Steps**:
+1. Locate the **Branch Context card**
+2. Note the **Scheduled Orders** toggle is ON
+3. Click the toggle to turn **Scheduled Orders OFF**
+4. Observe: the toggle updates; a success/error notification appears
+5. Navigate to **Restaurant** → **Manage Restaurant** → **Branch** tab
+6. Confirm `AcceptsScheduledOrders` shows as disabled there too
+7. Return to the Dashboard and re-enable the toggle
+8. Confirm the Branch tab shows `AcceptsScheduledOrders` as enabled again
+
+**Expected Result**:
+- Dashboard quick-toggle and Branch Settings tab stay in sync
+- Toggling off removes the scheduled-order slot picker from the customer front-end
+- Toggling on restores it
+
+**Pass Criteria**:
+- ✅ Dashboard toggle and Branch Settings are in sync
+- ✅ Change persists after page reload
+- ✅ Customer slot picker appears/disappears as expected
+
+**Edge Cases**:
+- Toggling while the Branch Settings tab is open in another tab → refreshing that tab should show the updated value
+- Disabling scheduled orders while a future scheduled order is pending → existing order is unaffected
+
+**Cross-portal verification**: Run **TC-XP-024** in [09-cross-portal-impact-uat.md](09-cross-portal-impact-uat.md).
+
+---
+
+### TC-VA-015: Branch Context Card — Live Order Kanban
+
+**Given**: You are on the **Live Orders / Kanban** page
+
+**Steps**:
+1. Navigate to **Orders** → **Live Orders**
+2. Locate the **Branch Context card** (same as on the Dashboard)
+3. Verify both **Taking Orders** and **Scheduled Orders** toggles are present
+4. Toggle **Taking Orders OFF** from the Kanban page
+5. Confirm the toggle updates and a notification appears
+6. Navigate back to the Dashboard — confirm the Dashboard toggle reflects the same OFF state
+
+**Expected Result**:
+- The Branch Context card with both toggles is present on the Kanban page as well as the Dashboard
+- Toggling on the Kanban page has the same effect as toggling on the Dashboard
+- State is shared — changing it on one page is reflected on all others
+
+**Pass Criteria**:
+- ✅ Branch Context card visible on Kanban page
+- ✅ Both toggles present and functional
+- ✅ Toggle state is consistent between Dashboard and Kanban
+
+**Edge Cases**:
+- Rapid toggle (ON/OFF/ON in quick succession) → final state should be persisted correctly
+- Toggling while orders are actively being managed → toggle should not interfere with order actions
 
 ---
 
@@ -344,6 +454,8 @@ The branch model stores `OpeningHoursJson` (per-day open/close times), `AcceptsS
 ### TC-VA-023: Configure Scheduled Orders
 
 **Given**: You are logged in as a Vendor Admin user and are viewing the Branch tab of the Manage Restaurant page
+
+> **Note**: `AcceptsScheduledOrders` can also be toggled quickly from the **Dashboard** (TC-VA-014) and the **Kanban page** (TC-VA-015) without navigating to the Branch settings tab. The Branch settings tab is the only place to configure `MaxScheduleAheadHours`, `PrepLeadTimeMinutes`, and `ScheduledOrderSlotIntervalMinutes`.
 
 **Steps**:
 1. Navigate to **Restaurant** → **Manage Restaurant** → **Branch** tab
@@ -573,22 +685,25 @@ The branch model stores `OpeningHoursJson` (per-day open/close times), `AcceptsS
 	- Dish name (required)
 	- Description (optional)
 	- Price (required)
+	- Category assignment (required): select one or more categories from the Select2 multi-select
 	- Dietary information (optional): vegetarian, vegan, gluten-free, allergens
 	- Image (optional)
 3. Click **"Save"**
 
 **Expected Result**:
 - A success message appears: "Dish created successfully"
-- The new dish appears within the selected category in the editor
+- The new dish appears in every selected category in the editor
 - The dish is visible on the customer front-end when the menu is published
 
 **Pass Criteria**:
 - ✅ Dish is created
 - ✅ Success message displayed
-- ✅ Dish appears in the correct category
+- ✅ Dish appears in all selected categories
+- ✅ Category selector renders as a Select2 control (not a native browser multi-select)
 
 **Edge Cases**:
 - Missing dish name or price → should enforce validation
+- No category selected → should block save and show validation because at least one category is required
 - Negative price → should show validation error
 - Price of £0.00 → should warn or allow (check business rules)
 - Dish name exceeds character limit → should show validation error
@@ -604,12 +719,13 @@ The branch model stores `OpeningHoursJson` (per-day open/close times), `AcceptsS
 
 **Steps**:
 1. Click **"Edit"** next to a dish
-2. Modify one or more fields (e.g., price, description, image)
+2. Modify one or more fields (e.g., price, description, image, category assignments)
 3. Click **"Save"**
 
 **Expected Result**:
 - A success message appears: "Dish updated successfully"
 - The updated dish details are reflected in the editor
+- If category assignments were changed, the dish appears in added categories and is removed from unselected categories
 - Updated information is visible on the customer front-end (if menu is published)
 
 **Pass Criteria**:
@@ -621,6 +737,40 @@ The branch model stores `OpeningHoursJson` (per-day open/close times), `AcceptsS
 - Invalid price format → should show validation error
 
 **Cross-portal verification**: After completing this test, run **TC-XP-005** in [09-cross-portal-impact-uat.md](09-cross-portal-impact-uat.md) to confirm the change reaches the customer front-end / driver portal.
+
+---
+
+### TC-VA-037A: Manage dish upsell links
+
+**Given**: You are in the menu editor and the menu has at least two dishes
+
+**Steps**:
+1. In a category row, click the **upsell link icon** next to the dish settings icon.
+2. Observe the **Upsell dishes** off-canvas.
+3. Confirm the table is grouped by category and existing upsell links for this dish are already ticked.
+4. Tick or untick dishes in the grouped table, then click **Auto-suggest** and review the selected set.
+5. In **Also apply to category**, leave **This dish only** selected and click **Save**.
+6. Reopen the same dish upsell panel and confirm your selection persisted.
+7. Select a category in **Also apply to category**, click **Save**, and confirm the bulk-apply prompt.
+
+**Expected Result**:
+- The upsell panel opens without forcing dish-edit mode.
+- Category groups are clear and each category appears once in the grouped list.
+- The current dish save applies immediately.
+- If you choose a category in **Also apply to category**, the same upsell set is applied to the other dishes in that category after confirmation.
+
+**Pass Criteria**:
+- ✅ Existing upsell links are preselected when reopening the panel
+- ✅ Category grouping is stable (no duplicated group headings for the same category)
+- ✅ Saving with **This dish only** updates only the current dish
+- ✅ Saving with a selected category updates additional dishes in that category
+
+**Edge Cases**:
+- Selecting the same dish as its own upsell should be blocked.
+- Choosing a category with no other dishes should save the current dish and show a non-error informational result.
+- Cancelling the bulk-apply confirmation should still keep the current dish save.
+
+**Cross-portal verification**: After completing this test, run **TC-FE-022** in [05-customer-frontend-uat.md](05-customer-frontend-uat.md#tc-fe-022-dish-upsell-ordering-and-visibility) to confirm upsell cards render correctly for customers.
 
 ---
 
@@ -1204,6 +1354,7 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
 **Steps**:
 1. Navigate to **Orders** → **Live Orders** or the **Kanban Dashboard**
 2. Observe the kanban board
+3. Verify the **Branch Context card** is visible with **Taking Orders** and **Scheduled Orders** toggles
 
 **Expected Result**:
 - A kanban board displays orders in columns:
@@ -1215,11 +1366,13 @@ The Menu Scan flow at `/Admin/MenuScan` lets vendors import a menu from uploaded
   - **Cancelled** (cancelled orders)
 - Each order card shows: order ID, customer name, items ordered, total amount, order time
 - The board auto-refreshes (or a refresh button is available)
+- The **Branch Context card** is shown with both toggles accurately reflecting the current branch state
 
 **Pass Criteria**:
 - ✅ Kanban board loads correctly
 - ✅ Orders are in the correct columns
 - ✅ Order cards show key information
+- ✅ Branch Context card visible with Taking Orders and Scheduled Orders toggles
 
 **Edge Cases**:
 - No active orders → "No orders" state should display for each column

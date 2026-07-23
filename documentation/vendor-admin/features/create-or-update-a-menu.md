@@ -16,7 +16,8 @@ Menu builder list -> Menu editor.
 3. Choose whether to edit manually in Menu editor or use AI menu scan import.
 4. If you use AI menu scan, upload menu images or PDF, review delta for existing menus, and import.
 5. Update any remaining menu-level information and structure in Menu editor.
-6. Save the changes before you move into publication or further dish work.
+6. For dishes that should appear in more than one section, assign multiple categories in the dish form. Keep at least one category selected.
+7. Save the changes before you move into publication or further dish work.
 
 ## Expected result
 The menu record reflects the current structure and details you want to manage.
